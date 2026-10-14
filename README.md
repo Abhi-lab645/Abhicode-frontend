@@ -2,7 +2,17 @@
 
 A high-performance, developer-first coding practice and problem-solving web platform built for **Abhicode**. Designed with rich aesthetics, instant search/filtering, full Markdown statement rendering with syntax highlighting, and an AMOLED pure black dark theme.
 
-Frontend for [`Abhicode-problem-service`](https://github.com/Abhi-lab645/Abhicode-problem-service).
+[![Production App](https://img.shields.io/badge/Production%20App-Live%20on%20Vercel-success?style=for-the-badge&logo=vercel)](https://abhicode-frontend.vercel.app)
+[![API Service](https://img.shields.io/badge/API%20Backend-problem--service.vercel.app-blue?style=for-the-badge&logo=vercel)](https://problem-service.vercel.app)
+
+Frontend client for [`Abhicode-problem-service`](https://github.com/Abhi-lab645/Abhicode-problem-service).
+
+---
+
+## 🌐 Production Deployments
+
+- **Live Web Application:** [https://abhicode-frontend.vercel.app](https://abhicode-frontend.vercel.app)
+- **Live Backend API:** [https://problem-service.vercel.app](https://problem-service.vercel.app)
 
 ---
 
@@ -54,6 +64,7 @@ Frontend for [`Abhicode-problem-service`](https://github.com/Abhi-lab645/Abhicod
 | **Syntax Highlighting** | [PrismJS](https://prismjs.com/) | Polyglot code syntax formatting |
 | **Primitives** | [Radix UI](https://www.radix-ui.com/) | Accessible unstyled dialogs and modals |
 | **Icons** | [Lucide React](https://lucide.dev/) | Consistent, clean icon set |
+| **Deployment** | [Vercel](https://vercel.com/) | Global edge hosting with SPA rewrites |
 
 ---
 
@@ -61,24 +72,28 @@ Frontend for [`Abhicode-problem-service`](https://github.com/Abhi-lab645/Abhicod
 
 ```
 abhicode-frontend/
-├── index.html
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-├── tailwind.config.js
-├── postcss.config.js
-├── public/
+├── index.html                        # Application HTML entry point
+├── package.json                      # Frontend dependencies & scripts
+├── tsconfig.json                     # TypeScript compiler configuration
+├── vite.config.ts                    # Vite build & plugin configuration
+├── tailwind.config.js                # Tailwind theme tokens & color definitions
+├── postcss.config.js                 # PostCSS setup
+├── vercel.json                       # Vercel SPA routing rewrite rules
+├── .env.example                      # Template for environment variables
+├── .env.production                   # Production environment configuration
+├── public/                           # Static assets, logos, and illustrations
 └── src/
-    ├── main.tsx                      # Application mount point with QueryClientProvider
+    ├── main.tsx                      # Mount point with QueryClientProvider & router
     ├── App.tsx                       # Root router configuration
-    ├── index.css                     # Global design tokens, OLED dark theme, and Markdown CSS
+    ├── index.css                     # Global tokens, OLED dark theme, and Markdown CSS
     ├── api/
-    │   └── problemApi.ts             # Axios/fetch service connecting to problem-service
+    │   ├── client.ts                 # Fetch wrapper with auto URL normalization & error handling
+    │   └── problems.ts               # Typed API services for all problem endpoints
     ├── components/
     │   ├── layout/
     │   │   ├── Header.tsx            # Sticky navigation bar with theme toggle
     │   │   ├── Footer.tsx            # Platform footer
-    │   │   └── Layout.tsx            # Main layout wrapper
+    │   │   └── Layout.tsx            # Main responsive layout wrapper
     │   ├── problem/
     │   │   ├── ProblemRow.tsx        # Problem table row component
     │   │   ├── ProblemFilters.tsx    # Search input and difficulty/topic filters
@@ -112,7 +127,7 @@ abhicode-frontend/
 ### Prerequisites
 - **Node.js**: v20 or higher
 - **npm** or **yarn** / **pnpm**
-- **Abhicode Problem Service**: Backend running on `http://localhost:3001` (or your configured API URL)
+- **Abhicode Problem Service**: Backend running locally on `http://localhost:3001` or deployed on `https://problem-service.vercel.app`
 
 ### 1. Installation
 
@@ -130,8 +145,11 @@ npm install
 Create a `.env` file in the project root:
 
 ```env
-# Backend API Base URL (defaults to http://localhost:3001/api/v1)
-VITE_API_BASE_URL=http://localhost:3001/api/v1
+# Local Development:
+VITE_API_BASE_URL=http://localhost:3001
+
+# Or connect directly to Production:
+# VITE_API_BASE_URL=https://problem-service.vercel.app
 ```
 
 ### 3. Run Development Server
