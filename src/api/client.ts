@@ -1,7 +1,9 @@
 import { ApiError } from '../types/problem';
 import type { ApiErrorPayload } from '../types/problem';
 
-const BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, '') || '';
+const RAW_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, '') || '';
+// Normalize BASE_URL so that endpoints starting with /api/v1 or /ping concatenate correctly without duplication
+const BASE_URL = RAW_BASE_URL.replace(/\/api(\/v1)?\/?$/, '');
 
 interface RequestOptions extends RequestInit {
   params?: Record<string, string | number | boolean | undefined>;
@@ -10,7 +12,9 @@ interface RequestOptions extends RequestInit {
 export async function request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
   const { params, headers, ...rest } = options;
 
-  let url = `${BASE_URL}${endpoint}`;
+  // Ensure clean concatenation
+  const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  let url = `${BASE_URL}${normalizedEndpoint}`;
   if (params) {
     const searchParams = new URLSearchParams();
     Object.entries(params).forEach(([key, value]) => {
